@@ -1,165 +1,124 @@
-# Challenge: turn the automation builder into a chat-first agent
+# Challenge: make automations work through chat
 
-## What exists today
+## The problem
 
-This repo ships a node-based rules builder. Pick a trigger, add filters and
-actions, fill in a form per step, save, run.
+Our automation builder is too hard to start with.
 
-![The builder today: sidebar, canvas, step settings, and the assistant squeezed into a side dock](docs/screenshots/builder-with-assistant-dock.jpg)
+To create one rule you pick a trigger, pick an app from a dialog, fill in a form,
+add the next step, fill in another form. There are 51 config sections. Most people
+open it, look at the empty canvas, and leave.
 
-There is already an assistant, and that screenshot is the problem. It is a ~320px
-strip that only appears if you click **Ask AI**, competing for width with the
-canvas and the step settings. Chat is bolted onto a form-driven product.
+![The builder today](docs/screenshots/builder-with-assistant-dock.jpg)
 
-## What to build
+There is an assistant, but it is a narrow strip you only see if you click **Ask
+AI**. It fights the canvas and the settings panel for space. Chat is an add-on to
+a form product.
 
-Rebuild the experience so **chat is the product**: you describe recurring work in
-plain language, an agent asks what it genuinely needs to know, does the work
-visibly, and produces something worth reading.
+## The task
 
-The screenshots in [`docs/reference/`](docs/reference/) are the target. Study them
-before designing anything — the detail in them *is* the specification.
+Flip it. **You describe what you want, chat builds it.**
 
-## 1. The conversation
+- Chat is how you create an automation.
+- The nodes stay, but only for **editing afterwards** — to check what was built
+  and change a detail. Never to create from scratch.
+- Fewer settings on screen. The agent asks for what it needs; it does not show
+  you every field.
 
-The whole surface is a conversation: task list on the left, transcript in the
-middle. Reasoning, tool calls and questions all land inline, in order.
+## What good looks like
 
-![The conversation with reasoning, tool calls and a clarifying card](docs/reference/01-clarifying-question.png)
+The screenshots in [`docs/reference/`](docs/reference/) are the bar. Match the
+feel, not the pixels.
 
-**Reasoning, collapsed by default.** `> Thought for 3.0s` rows the user can
-expand, several per turn, interleaved with the work — not one block up front.
+### Ask, don't assume
 
-**Tool calls as inline, expandable steps.** `Pulling your brand list…` with a
-completion tick, expandable to its result, and results rendered richly: an entity
-chip with a link-out, or a strip of ad thumbnails streaming in as they are
-fetched. The user should be able to watch the agent work and audit what it
-actually looked at.
+The agent asks the few things it can't work out, as a card in the chat. Options
+with a recommended default, or a text box. Never a settings form.
 
-![Tool calls streaming image results, with a Step 1/3 progress checklist](docs/reference/05-tool-progress.png)
+![Inline clarifying question](docs/reference/01-clarifying-question.png)
 
-**Clarifying questions as inline cards — the centrepiece.** When the agent needs
-a decision it does not guess. It renders a card in the transcript with:
+![Second question and the writing status](docs/reference/02-second-question-and-writing.png)
 
-- the question as a heading, and a sentence on *why* it is asking
-- radio options, each with a one-line explanation, one marked **(Recommended)**
-- an optional free-text box for a custom answer
-- **Skip** and **Next / Confirm**
-- `Step 1 of 2` pagination with arrows when questions are batched
+![Free-text question](docs/reference/04-freetext-question.png)
 
-![Step 2 of 2, and the Writing / Polishing status](docs/reference/02-second-question-and-writing.png)
+If the answer is still vague, it asks again instead of guessing.
 
-Some cards take free text instead of options — and the agent notices when an
-answer is still a placeholder and asks again rather than proceeding:
+### Show the work
 
-![A clarifying card taking free text](docs/reference/04-freetext-question.png)
+Thinking is collapsed but openable. Tool calls appear as steps you can expand,
+with real results — not a spinner.
 
-The bar: ask only when the answer changes what gets built, and never silently
-assume.
+![Tool calls with results and a progress checklist](docs/reference/05-tool-progress.png)
 
-**A status that names the phase.** `Writing · Polishing`, not a spinner. A
-`Step 1/3` checklist with named stages for long work.
+### Give a real answer
 
-## 2. The output
+A proper written result, with follow-up suggestions you can click.
 
-![The finished answer, feedback row, and follow-up suggestion cards](docs/reference/03-answer-and-followups.png)
+![Answer with follow-up suggestions](docs/reference/03-answer-and-followups.png)
 
-**The reply is a real document.** Headings, bullets, bold, tables, an emoji
-callout for a caveat worth noticing. Reference 3 flags a timezone gotcha the user
-never asked about — surfacing consequences unprompted is the point.
-
-**Long output becomes an artifact, not a wall of chat.** A titled card lands in
-the transcript; clicking it opens the document in a split right-hand pane with
-share, export and close.
+Long output opens as a document beside the chat, not a wall of text in it.
 
 ![Document card and split view](docs/reference/06-document-card-and-split-view.jpg)
-![Summary with the document open alongside](docs/reference/07-summary-and-split-document.jpg)
 
-The chat keeps a TL;DR and anything needing confirmation; the pane holds the full
-piece. [`sample-output-document.md`](docs/reference/sample-output-document.md) is
-a real generated briefing — that is the quality bar. Note how it states its
-coverage window, flags ambiguity it could not resolve, and lists its own data
-gaps.
+![Summary with the document open](docs/reference/07-summary-and-split-document.jpg)
 
-**Follow-up suggestions as cards.** Three specific next moves (`Fix timezone
-issue`, `Add Slack delivery`, `Turn insights into creatives`), dismissible, each
-prefilling the composer. Generic prompts are worse than none.
+[`sample-output-document.md`](docs/reference/sample-output-document.md) is a real
+example of the writing quality.
 
-**Feedback.** A quiet `Was this answer helpful?` with thumbs.
+### Then manage it
 
-## 3. Automations as living things
+Saved automations become simple rows: schedule in plain words, paused state, and
+anything blocking them shown right there.
 
-![The Automations tab with no active runs](docs/reference/08-automations-tab-empty.jpg)
-![A saved automation with a blocking requirement](docs/reference/09-automations-tab-list.jpg)
+![Automations list](docs/reference/09-automations-tab-list.jpg)
 
-An automation created in chat becomes a row you can manage:
+![Empty state with starter suggestions](docs/reference/08-automations-tab-empty.jpg)
 
-- `Active` / `Inactive` tabs with counts, and a `Created by me` filter
-- schedule in plain words — `At 10:00, only on Monday`
-- state chips (`Paused`) and **blocking requirements surfaced on the row**: the
-  amber `Select a brand` pill means this rule cannot run until it is answered.
-  Resolve it inline, not by hunting through a settings form.
-- starter suggestions when the list is empty
-- a task list showing runs, including `Needs Input` when one is blocked on a
-  question
+## Rules
 
-## What still has to be true
-
-The chat must produce a **real, saved automation** — not a transcript.
-
-- Every conversation resolves to a saved flow with the trigger/filter/action
-  structure this repo already models. `automation-context.tsx` still owns it.
-- Steps stay inspectable. Keep the node view as a secondary surface — a panel, a
-  tab, a "show the flow" affordance, your call — so a user can see and hand-edit
-  exactly what will run. Chat replaces the *primary* path, not the ability to
-  verify.
-- Saving, running, renaming, activating and the templates keep working.
+- The chat must save a **real automation**, using the trigger/filter/action
+  structure already in the repo. `automation-context.tsx` still owns it.
+- Keep a way to see and edit the steps after they're built. A panel, a tab, the
+  existing canvas — your call.
+- Save, run, rename and activate keep working.
 
 ## The backend
 
-There is no model in this repo. `/api/automation-assistant/stream` and
-`/api/chat/*` are served by the catch-all mock in `app/api/[...path]/route.ts`.
+There is no model here. `/api/automation-assistant/stream` and `/api/chat/*` are
+served by a mock in `app/api/[...path]/route.ts`.
 
-Either route is fine:
+Either is fine:
 
-1. **Script it.** Implement the streaming endpoint with a scripted or rule-based
-   responder emitting the reasoning, tool-call, question-card, artifact and answer
-   events. Keeps the repo runnable with no keys.
-2. **Wire a real model** behind an env var, still runnable without one.
+1. **Script it** — a fake responder that emits the thinking, tool-call, question
+   and answer events. Repo stays runnable with no keys.
+2. **Plug in a real model** behind an env var, still runnable without one.
 
-The interaction design is what is judged, not the model.
+We're judging the design, not the model.
 
 ## Where to start
 
 | Thing | File |
 | --- | --- |
-| Page shell, view switching, assistant mounting | `app/(dashboard)/automation/page.tsx` |
-| The assistant panel as it exists now | `app/(dashboard)/automation/components/assistant-panel.tsx` |
-| Assistant state and stream consumption | `app/(dashboard)/automation/hooks/use-automation-assistant.ts` |
-| Stream event types | `lib/chat/types.ts`, `lib/chat/sse.ts` |
-| How the assistant writes steps into the flow | `app/(dashboard)/automation/lib/assistant-canvas.ts`, `.../assistant-step-order.ts` |
+| The page | `app/(dashboard)/automation/page.tsx` |
+| The assistant today | `app/(dashboard)/automation/components/assistant-panel.tsx` |
+| Assistant state | `app/(dashboard)/automation/hooks/use-automation-assistant.ts` |
+| Stream events | `lib/chat/types.ts`, `lib/chat/sse.ts` |
+| Assistant → steps | `app/(dashboard)/automation/lib/assistant-step-order.ts` |
 | Flow state, save, run | `app/(dashboard)/automation/contexts/automation-context.tsx` |
 | The automations list | `app/(dashboard)/automation/components/automations-table.tsx` |
-| What a step can be | `app/(dashboard)/automation/lib/automation-registry.ts` |
-| Canvas and node card, if you keep them | `.../components/flow-builder.tsx`, `.../components/flow-node.tsx` |
+| Available steps | `app/(dashboard)/automation/lib/automation-registry.ts` |
+| Canvas and node card | `.../components/flow-builder.tsx`, `.../components/flow-node.tsx` |
 
-`upsertAssistantNodeInFlow` in `assistant-step-order.ts` is the existing seam for
-"the assistant produced a step" — start there rather than opening a second path
-into the flow state.
+Use `upsertAssistantNodeInFlow` in `assistant-step-order.ts` to add steps. Don't
+open a second path into the flow state.
 
-## How it will be judged
+## How we'll judge it
 
-1. **Does the clarifying loop work end to end?** A vague request becomes a correct
-   automation through questions, not guesses.
-2. **Can you trust it?** Reasoning, tool calls and resulting steps are all
-   inspectable, and the agent admits what it could not resolve.
-3. **Does the output earn a split pane?** Compare yours to the sample document.
-4. **Does it feel like an agent working**, or a form with a chat skin?
-5. **Is the code something you would keep?** Follow what is here: typed, small
-   components, no `any`.
+1. **Can someone build a working automation just by talking?**
+2. **Is it simpler than what we have now?**
+3. **Can you trust it** — see what it did and fix it after?
+4. **Is the code clean?** Typed, small components, no `any`.
 
-Scope honestly. A narrow slice done properly beats all of it done thinly — say
-what you cut and why.
+Do a narrow slice well rather than all of it badly. Tell us what you skipped.
 
 ## Running it
 
@@ -170,5 +129,5 @@ pnpm typecheck
 pnpm build
 ```
 
-No environment variables, no database, no accounts. Read `README.md` for what is
-real in this repo and what is stubbed before assuming something is broken.
+No env vars, no database, no accounts. `README.md` says what's real and what's
+mocked — read it before assuming something is broken.

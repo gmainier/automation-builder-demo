@@ -12,45 +12,25 @@ Then open <http://localhost:3000>.
 
 ## The challenge
 
-Rebuild this so **chat is the product**: describe recurring work in plain
-language, an agent asks what it genuinely needs to know, does the work visibly,
-and produces something worth reading.
+Our builder is too hard to start with. Pick a trigger, pick an app, fill in a
+form, repeat — across 51 config sections. Most people open it and leave.
 
-Today the assistant is a 320px strip competing with the canvas for width. The
-target is a chat-first agent with inline clarifying-question cards, expandable
-reasoning and tool calls, and long output opening as a document in a split pane.
+**Make it work through chat instead.** You describe what you want, chat builds
+it. The nodes stay for editing afterwards, not for creating.
 
-### The target
+The agent asks only what it can't work out, as a card in the chat:
 
-The agent asks what it genuinely needs before building anything, as an inline
-card in the transcript — with reasoning and tool calls expandable above it:
+![Inline clarifying question](docs/reference/01-clarifying-question.png)
 
-![The conversation with reasoning, tool calls and an inline clarifying question](docs/reference/01-clarifying-question.png)
+Long output opens as a document beside the chat:
 
-Long output lands as a titled card in the transcript and opens as a document in a
-split right-hand pane, so the chat keeps the TL;DR and the pane holds the piece:
+![Document card and split view](docs/reference/06-document-card-and-split-view.jpg)
 
-![The document card in the transcript, opened into a split pane](docs/reference/06-document-card-and-split-view.jpg)
+Saved automations become simple rows, with anything blocking them shown inline:
 
-The summary stays scannable — what it found, what it still needs confirmed — with
-follow-up suggestions underneath:
+![Automations list](docs/reference/09-automations-tab-list.jpg)
 
-![Summary with confirmations, follow-ups, and the document open alongside](docs/reference/07-summary-and-split-document.jpg)
-
-An automation created in chat becomes a row you can manage, with its schedule in
-plain words and blocking requirements surfaced inline (the amber pill means it
-cannot run until answered):
-
-![A saved automation showing schedule, paused state and a blocking requirement](docs/reference/09-automations-tab-list.jpg)
-
-Empty state offers starter automations rather than a blank page:
-
-![The Automations tab with no active runs](docs/reference/08-automations-tab-empty.jpg)
-
-[`docs/reference/sample-output-document.md`](docs/reference/sample-output-document.md)
-is a real generated briefing — that is the quality bar for what the agent writes.
-
-**Full brief, every reference screenshot and the judging criteria: [TASK.md](TASK.md).**
+**Full brief: [TASK.md](TASK.md).**
 
 ## What it is
 
