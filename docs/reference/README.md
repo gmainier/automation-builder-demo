@@ -19,6 +19,3 @@ respective owners.
 | `08-automations-tab-empty.jpg` | The Automations tab with no active runs, offering starter suggestions |
 | `09-automations-tab-list.jpg` | A saved automation: schedule, Paused chip, a blocking "Select a brand" pill, Resume |
 | `sample-output-document.md` | A real generated briefing — the quality bar for artifacts |
-
-`01`–`05` are not committed yet. Drop them in with these exact filenames and the
-links in `TASK.md` resolve.

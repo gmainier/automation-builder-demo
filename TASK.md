@@ -22,9 +22,10 @@ before designing anything — the detail in them *is* the specification.
 
 ## 1. The conversation
 
-> The five chat-flow screenshots (`01`–`05`) referenced below live in
-> `docs/reference/`. See that folder's README for what each one shows.
+The whole surface is a conversation: task list on the left, transcript in the
+middle. Reasoning, tool calls and questions all land inline, in order.
 
+![The conversation with reasoning, tool calls and a clarifying card](docs/reference/01-clarifying-question.png)
 
 **Reasoning, collapsed by default.** `> Thought for 3.0s` rows the user can
 expand, several per turn, interleaved with the work — not one block up front.
@@ -35,6 +36,7 @@ chip with a link-out, or a strip of ad thumbnails streaming in as they are
 fetched. The user should be able to watch the agent work and audit what it
 actually looked at.
 
+![Tool calls streaming image results, with a Step 1/3 progress checklist](docs/reference/05-tool-progress.png)
 
 **Clarifying questions as inline cards — the centrepiece.** When the agent needs
 a decision it does not guess. It renders a card in the transcript with:
@@ -45,14 +47,22 @@ a decision it does not guess. It renders a card in the transcript with:
 - **Skip** and **Next / Confirm**
 - `Step 1 of 2` pagination with arrows when questions are batched
 
-Some cards take free text instead of options. The bar: ask only when the answer
-changes what gets built, and never silently assume.
+![Step 2 of 2, and the Writing / Polishing status](docs/reference/02-second-question-and-writing.png)
+
+Some cards take free text instead of options — and the agent notices when an
+answer is still a placeholder and asks again rather than proceeding:
+
+![A clarifying card taking free text](docs/reference/04-freetext-question.png)
+
+The bar: ask only when the answer changes what gets built, and never silently
+assume.
 
 **A status that names the phase.** `Writing · Polishing`, not a spinner. A
 `Step 1/3` checklist with named stages for long work.
 
 ## 2. The output
 
+![The finished answer, feedback row, and follow-up suggestion cards](docs/reference/03-answer-and-followups.png)
 
 **The reply is a real document.** Headings, bullets, bold, tables, an emoji
 callout for a caveat worth noticing. Reference 3 flags a timezone gotcha the user

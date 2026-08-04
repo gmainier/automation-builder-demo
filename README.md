@@ -22,6 +22,11 @@ reasoning and tool calls, and long output opening as a document in a split pane.
 
 ### The target
 
+The agent asks what it genuinely needs before building anything, as an inline
+card in the transcript — with reasoning and tool calls expandable above it:
+
+![The conversation with reasoning, tool calls and an inline clarifying question](docs/reference/01-clarifying-question.png)
+
 Long output lands as a titled card in the transcript and opens as a document in a
 split right-hand pane, so the chat keeps the TL;DR and the pane holds the piece:
 
