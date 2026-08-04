@@ -1,7 +1,11 @@
 # Reference screenshots
 
-The visual target for the challenge in [`TASK.md`](../../TASK.md). All seven show
-the same chat-first automation experience, plus a real output document.
+The visual target for the challenge in [`TASK.md`](../../TASK.md). They show a
+chat-first automation experience, plus a real output document.
+
+These are screenshots of a third-party product, included as UX reference for the
+exercise. All product names, trademarks and content in them belong to their
+respective owners.
 
 | File | What it shows |
 | --- | --- |
