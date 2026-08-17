@@ -138,6 +138,25 @@ export interface ChatErrorDebugInfo {
   readonly context?: Record<string, unknown>;
 }
 
+// ─── Clarifying questions (agent → user) ────────────────────────────────────
+
+export interface QuestionOption {
+  readonly value: string;
+  readonly label: string;
+  readonly description?: string;
+  readonly recommended?: boolean;
+}
+
+export interface ClarifyingQuestion {
+  readonly id: string;
+  readonly text: string;
+  readonly options?: readonly QuestionOption[];
+  /** When true, show a free-text input instead of (or alongside) options. */
+  readonly freeform?: boolean;
+  readonly step?: number;
+  readonly totalSteps?: number;
+}
+
 // ─── SSE stream events (server → client) ───────────────────────────────────
 
 export type ChatStreamEvent =
